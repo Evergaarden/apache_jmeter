@@ -65,7 +65,7 @@
 - `Error %` : зафиксированный процент ошибок
 - `Throughput` : пропускная способность (количество запросов в секунду)
 
-![])https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_gcDlasKDPU.png?raw=true)
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_gcDlasKDPU.png?raw=true)
 
 
 Результаты для `View Result Tree` менее информативны об общих результатах деградации системы, если таковая имеется, но тем не менее можно увидеть следующие моменты:
