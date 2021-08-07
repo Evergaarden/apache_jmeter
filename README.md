@@ -1,5 +1,8 @@
 ## JMeter
 
-Файл <a href="https://github.com/Evergaarden/apache_jmeter/blob/main/Performance_testing(Test_Plan).jmx">Performance_testing(Test_Plan).jmx</a> содержит сохраненные настройки и переменные, которые использовались в ходе тестирования. 
+The <a href="https://github.com/Evergaarden/apache_jmeter/blob/main/Performance_testing(Test_Plan).jmx">Performance_testing(Test_Plan).jmx</a> contains saved settings and variables that were used during testing.
 
-Также я написал краткий <a href="https://github.com/Evergaarden/apache_jmeter/blob/main/JMeter_TestManual.md">мануал</a> с подробными пояснениями о том как и с помощью каких компонентов тестировал в JMeter и прилагаю к нему <a href="https://github.com/Evergaarden/apache_jmeter/blob/main/JMeter_Test_Plan_for_TestManual.jmx">файл</a>.
+Also I wrote a short <a href="https://github.com/Evergaarden/apache_jmeter/blob/main/JMeter_TestManual.md">manual</a> with detailed explanations about how and with which components and tools I tested in JMeter (the <a href="https://github.com/Evergaarden/apache_jmeter/blob/main/JMeter_Test_Plan_for_TestManual.jmx">file</a> which was used in the manual)
+
+
+
