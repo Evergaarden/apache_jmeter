@@ -35,14 +35,14 @@
 
 Параметры `Web Server` мы заполнили в предыдущем шаблоне, поэтому здесь входные поля можно оставить пустыми
 
-Также заполним `Body Data` для HTTP-сэмплера, воспользуясь json форматом `{key:value}`
+Также заполним `Parameters` для HTTP-сэмплера
           
-          {
-          "login":"Bogdan",
-	       "password":"Qwerty123"
-          }
+        
+           login : Bogdan
+	   password : Qwerty123 
+          
 	  
-![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_w0vwcwrBDu.png?raw=true)
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_spHE8Hk9ZC.png?raw=true)
 
 Далее добавим `Listener`
 
@@ -68,7 +68,7 @@
 ![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_gcDlasKDPU.png?raw=true)
 
 
-Результаты для `View Result Tree` менее информативны об общих результатах деградации системы, если таковая имеется, но тем не менее можно увидеть следующие моменты:
+Результаты для `View Result Tree` менее информативны об общих сведениях деградации системы, если таковая имеется, но тем не менее можно увидеть следующие моменты:
 - `Sampler result` : содержит информацию по каждому сэмплу (код ответа, количество циклов, тип данных и др) 
 
 ![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/hmkFk2ZtgK.png?raw=true)
@@ -90,21 +90,25 @@
 
 В JMeter каждый новый созданый компонент появляется в конце списка и последовательность выполнения того или иного компонента зависит от его расположения в этом списке. Поэтому перетащим его выше 
 
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_5ERBLOps4p.png?raw=true)
+
 В параметры сэмплера внесем:
 
 - `HTTP Request` : `POST`
 - `Path` : `/user_info`
 
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_g44IGRoWFY.png?raw=true)
+
 Параметры `Web Server` по-прежнему оставляем пустыми, поскольку создан шаблон
 
-Заполним `Body Data` и снова воспользуемся json форматом `{key:value}`:
+Заполним `Body Data` и воспользуемся json форматом `{key:value}`:
 
     {"age": 25,
     "salary": 60000,
     "name": "Bogdan",
-    "auth_token": }
+    "auth_token": "Здесь должен быть токен"}
 
-Значение ключа `auth_token` можно заполнить вручную, для этого нужно скопировать из тела ответа сэмплера `HTTP Request` и вставить его значение `("token":"/s34lfgbj/None/jjd909/70750kjkWpqc783None44053evny")` уже в текущий запрос, но лучше воспользуемся переменным окружением и автоматически достанем содержимое ответа `HTTP Request` и вставим его в тело запроса `HTTP Request (2)`
+Значение ключа `auth_token` можно заполнить вручную, для этого нужно скопировать из тела ответа сэмплера `HTTP Request` и вставить его значение `("/s34lfgbj/Bogdan/jjd909/99284kjkWpqc2787Qwerty12334752evny")` уже в текущий запрос, но лучше воспользуемся переменным окружением и автоматически достанем содержимое ответа `HTTP Request` и вставим его в тело запроса `HTTP Request (2)`
 
 Для этого потребуется воспользоваться компонентом `Post Processors`, а именно `JSON Extractor`
 
@@ -119,23 +123,57 @@
 - `JSON Path expressions` (путь за содержимым) : `$.token`
 - `Match No` : `1`
 
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_GXBYuOQ2Rp.png?raw=true)
+
 Таким образом мы получили содержимое ответа сэмплера `HTTP Request`
 
-Теперь нужно воспользоваться компонентом `Assertation`
+Теперь нужно воспользоваться компонентом `Assertions`
 
 `Assertions` - группа компонентов, позволяющих проверять результат выполнения запросов, сравнивая его с указанным утверждением
 
-`HTTP Request` -> `Add` -> `Assertionы` -> `JSON Extractor` -> `BeanShell Assertion`
+`HTTP Request` -> `Add` -> `Assertions` -> `JSON Extractor` -> `BeanShell Assertion`
 
 С помощью `BeanShell Assertion` можно положить содержимое ответа `JSON Extractor` в окружение
 
-Введем `${__setProperty(token,${token})}` в текстовое поле
+Введем `${__setProperty(token,${token})}` в текстовой зоне
 
-Свойства (property) JMeter аналогичны переменным, но их зона видимости не ограничена конкретным потоком, а распространяется на весь Test Plan.
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_N8xIFJBRb0.png?raw=true)
 
-> >  Для обращения к свойствам используются соответствующие функции:
-> > `${__setProperty('name', 'value')} — задать значение свойства`
-> > `${__property('name')} или ${__P('name')} — получить значение свойства`
+> > Свойства (property) JMeter аналогичны переменным, но их зона видимости не ограничена конкретным потоком, а распространяется на весь Test Plan.
+> > <br> Для обращения к свойствам используются соответствующие функции: 
+> > <br> `${__setProperty('name', 'value')} — задать значение свойства`
+> > <br> `${__property('name')} или ${__P('name')} — получить значение свойства`
+
+
+Вернемся к параметрам сэмплера `HTTP Request (2)` и в `Body Data` дополним значение `${token}` к ключу `auth_token`
+
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_abzWjbNt53.png?raw=true)
+
+Теперь при каждом запуске потоков, токен из ответа сэмплера `HTTP Request` будет автоматически подставляться сюда  
+
+Также необходимо добавить еще один компонент для сэмплера `HTTP Request (2)`, а именно:
+
+`HTTP Request (2)` -> `Add` -> `Config Element` -> `HTTP Header Manager`
+
+И прописать вручную следующие свойства, используя кнопку `Add`: 
+
+- `Content-type` : `application/json`
+
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_wugZec06nS.png?raw=true)
+
+Шаблон `HTTP Header Manager` будет применен только для сэмплера `HTTP Request (2)` поскольку находится внутри родителя и не будет действовать на весь `Test Plan` как `HTTP Request Defaults`
+
+`HTTP Header Manager` в данном случае нужен для того чтобы сервер смог принять запрос и ответить на него без ошибок, поскольку сервер ожидает по эндпойнту `/user_info` информацию о типе данных формата `application/json`, а наш сэмплер по умолчанию будет содержать информацию в хедере `text/plain`
+
+Теперь запускаем наши потоки и смотрим результат
+
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_y5W2yyP8UJ.png?raw=true)
+
+![](https://github.com/Evergaarden/apache_jmeter/blob/main/img/javaw_p33sLCJJqy.png?raw=true)
+
+
+
+
 
 
 
